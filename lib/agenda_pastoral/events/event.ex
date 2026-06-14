@@ -23,7 +23,18 @@ defmodule AgendaPastoral.Events.Event do
   @doc false
   def changeset(event, attrs) do
     event
-    |> cast(attrs, [:title, :description, :start_at, :end_at, :type, :priority, :status, :change_reason, :church_id, :created_by])
+    |> cast(attrs, [
+      :title,
+      :description,
+      :start_at,
+      :end_at,
+      :type,
+      :priority,
+      :status,
+      :change_reason,
+      :church_id,
+      :created_by
+    ])
     |> validate_required([:title, :start_at, :end_at, :type, :priority, :status, :church_id])
   end
 end

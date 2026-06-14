@@ -50,8 +50,14 @@ defmodule AgendaPastoralWeb.Layouts do
             <a href="/calendar" class="text-sm font-medium hover:text-primary transition-colors">Calendário</a>
             <a href="/churches" class="text-sm font-medium hover:text-primary transition-colors">Igrejas</a>
             <%= if @current_scope && @current_scope.user do %>
-              <a href="/admin" class="text-sm font-medium text-secondary hover:text-primary transition-colors">Painel</a>
-              <a href="/users/settings" class="text-sm font-medium hover:text-primary transition-colors">Configurações</a>
+              <a
+                href="/admin"
+                class="text-sm font-medium text-secondary hover:text-primary transition-colors"
+              >Painel</a>
+              <a
+                href="/users/settings"
+                class="text-sm font-medium hover:text-primary transition-colors"
+              >Configurações</a>
               <span class="text-xs opacity-50" title={@current_scope.user.email}>Olá, {@current_scope.user.name}</span>
               <.link
                 href={~p"/users/log-out"}
@@ -67,13 +73,16 @@ defmodule AgendaPastoralWeb.Layouts do
 
           <div class="flex items-center gap-3">
             <.theme_toggle />
-            
+
             <%!-- Mobile menu trigger --%>
             <div class="dropdown dropdown-end md:hidden">
               <button tabindex="0" class="btn btn-ghost btn-circle">
                 <.icon name="hero-bars-3" class="size-6" />
               </button>
-              <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 mt-4 border border-base-200">
+              <ul
+                tabindex="0"
+                class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 mt-4 border border-base-200"
+              >
                 <li><a href="/">Início</a></li>
                 <li><a href="/calendar">Calendário</a></li>
                 <li><a href="/churches">Igrejas</a></li>

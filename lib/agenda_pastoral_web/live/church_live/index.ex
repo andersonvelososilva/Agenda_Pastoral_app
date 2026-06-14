@@ -54,6 +54,7 @@ defmodule AgendaPastoralWeb.ChurchLive.Index do
 
   # Helpers
   defp format_datetime(nil), do: "Sem visitas programadas"
+
   defp format_datetime(datetime) do
     local_dt = DateTime.add(datetime, -3, :hour)
     date_str = format_date(DateTime.to_date(local_dt))
@@ -63,12 +64,30 @@ defmodule AgendaPastoralWeb.ChurchLive.Index do
 
   defp format_date(date) do
     months = %{
-      1 => "jan", 2 => "fev", 3 => "mar", 4 => "abr", 5 => "mai", 6 => "jun",
-      7 => "jul", 8 => "ago", 9 => "set", 10 => "out", 11 => "nov", 12 => "dez"
+      1 => "jan",
+      2 => "fev",
+      3 => "mar",
+      4 => "abr",
+      5 => "mai",
+      6 => "jun",
+      7 => "jul",
+      8 => "ago",
+      9 => "set",
+      10 => "out",
+      11 => "nov",
+      12 => "dez"
     }
+
     days = %{
-      1 => "Seg", 2 => "Ter", 3 => "Qua", 4 => "Qui", 5 => "Sex", 6 => "Sáb", 7 => "Dom"
+      1 => "Seg",
+      2 => "Ter",
+      3 => "Qua",
+      4 => "Qui",
+      5 => "Sex",
+      6 => "Sáb",
+      7 => "Dom"
     }
+
     day_of_week = Date.day_of_week(date, :sunday)
     "#{Map.get(days, day_of_week)}, #{date.day} #{Map.get(months, date.month)}"
   end
@@ -84,7 +103,6 @@ defmodule AgendaPastoralWeb.ChurchLive.Index do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
       <div class="space-y-6">
-        
         <%!-- Header --%>
         <div class="py-4 border-b border-base-200">
           <h1 class="text-3xl font-extrabold tracking-tight text-base-content">
@@ -113,7 +131,9 @@ defmodule AgendaPastoralWeb.ChurchLive.Index do
         <%!-- Grid das Igrejas --%>
         <%= if Enum.empty?(@churches) do %>
           <div class="text-center py-12 bg-base-100 rounded-2xl border border-base-200">
-            <p class="text-base-content opacity-60">Nenhuma igreja encontrada com o termo pesquisado.</p>
+            <p class="text-base-content opacity-60">
+              Nenhuma igreja encontrada com o termo pesquisado.
+            </p>
           </div>
         <% else %>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -166,7 +186,6 @@ defmodule AgendaPastoralWeb.ChurchLive.Index do
             </div>
           </div>
         <% end %>
-
       </div>
     </Layouts.app>
     """

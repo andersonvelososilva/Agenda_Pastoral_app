@@ -5,7 +5,7 @@ defmodule AgendaPastoralWeb.ChurchLiveTest do
   import AgendaPastoral.ChurchesFixtures
 
   test "renders churches list page", %{conn: conn} do
-    church = church_fixture(%{name: "Igreja Central"})
+    _church = church_fixture(%{name: "Igreja Central"})
 
     {:ok, _view, html} = live(conn, ~p"/churches")
     assert html =~ "Igrejas do Distrito"

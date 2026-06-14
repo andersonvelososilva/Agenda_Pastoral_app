@@ -86,6 +86,7 @@ defmodule AgendaPastoral.Events do
   """
   def list_upcoming_events(limit \\ 10) do
     now = DateTime.utc_now()
+
     Repo.all(
       from e in Event,
         where: e.start_at >= ^now,

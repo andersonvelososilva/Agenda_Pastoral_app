@@ -2,7 +2,9 @@ defmodule AgendaPastoralWeb.ErrorJSONTest do
   use AgendaPastoralWeb.ConnCase, async: true
 
   test "renders 404" do
-    assert AgendaPastoralWeb.ErrorJSON.render("404.json", %{}) == %{errors: %{detail: "Not Found"}}
+    assert AgendaPastoralWeb.ErrorJSON.render("404.json", %{}) == %{
+             errors: %{detail: "Not Found"}
+           }
   end
 
   test "renders 500" do

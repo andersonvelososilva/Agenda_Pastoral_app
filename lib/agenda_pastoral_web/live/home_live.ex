@@ -60,7 +60,7 @@ defmodule AgendaPastoralWeb.HomeLive do
       12 => "dezembro"
     }
 
-    day_of_week = Calendar.ISO.day_of_week(date.year, date.month, date.day)
+    day_of_week = Date.day_of_week(date)
     "#{Map.get(days, day_of_week)}, #{date.day} de #{Map.get(months, date.month)} de #{date.year}"
   end
 
@@ -77,9 +77,14 @@ defmodule AgendaPastoralWeb.HomeLive do
     "#{date_str} às #{time_str}"
   end
 
-  defp translate_priority("urgent"), do: {"Urgente", "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"}
-  defp translate_priority("important"), do: {"Importante", "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200"}
-  defp translate_priority(_), do: {"Normal", "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"}
+  defp translate_priority("urgent"),
+    do: {"Urgente", "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"}
+
+  defp translate_priority("important"),
+    do: {"Importante", "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200"}
+
+  defp translate_priority(_),
+    do: {"Normal", "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"}
 
   defp translate_type("culto_divino"), do: "Culto Divino"
   defp translate_type("santa_ceia"), do: "Santa Ceia"
@@ -96,7 +101,6 @@ defmodule AgendaPastoralWeb.HomeLive do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
       <div class="space-y-8 animate-fade-in">
-        
         <%!-- Header Distrito --%>
         <div class="text-center md:text-left py-6 border-b border-base-200">
           <h1 class="text-3xl font-extrabold tracking-tight md:text-4xl text-base-content">
@@ -123,12 +127,19 @@ defmodule AgendaPastoralWeb.HomeLive do
             <div class="mt-6 border-t border-base-200/55 pt-6">
               <%= if Enum.empty?(@today_events) do %>
                 <div class="text-center py-6">
-                  <p class="text-base-content opacity-60 font-medium">Sem programação cadastrada para hoje.</p>
-                  <p class="text-xs opacity-40 mt-1">Aproveite para orar pelo ministério pastoral hoje!</p>
+                  <p class="text-base-content opacity-60 font-medium">
+                    Sem programação cadastrada para hoje.
+                  </p>
+                  <p class="text-xs opacity-40 mt-1">
+                    Aproveite para orar pelo ministério pastoral hoje!
+                  </p>
                 </div>
               <% else %>
                 <div class="space-y-4">
-                  <div :for={event <- @today_events} class="flex items-start gap-4 p-4 bg-base-100 rounded-xl border border-base-200 shadow-sm hover:shadow-md transition-shadow">
+                  <div
+                    :for={event <- @today_events}
+                    class="flex items-start gap-4 p-4 bg-base-100 rounded-xl border border-base-200 shadow-sm hover:shadow-md transition-shadow"
+                  >
                     <div class="p-3 bg-primary/10 rounded-lg text-primary">
                       <.icon name="hero-calendar-days" class="size-6" />
                     </div>
@@ -170,7 +181,10 @@ defmodule AgendaPastoralWeb.HomeLive do
               <h2 class="text-xl font-bold flex items-center gap-2 text-base-content">
                 <.icon name="hero-clock" class="size-5 text-primary" /> Próximos Eventos
               </h2>
-              <a href="/calendar" class="text-sm font-semibold text-primary hover:underline flex items-center gap-1">
+              <a
+                href="/calendar"
+                class="text-sm font-semibold text-primary hover:underline flex items-center gap-1"
+              >
                 Ver todos <span aria-hidden="true">&rarr;</span>
               </a>
             </div>
@@ -181,12 +195,31 @@ defmodule AgendaPastoralWeb.HomeLive do
               </div>
             <% else %>
               <div class="space-y-3">
-                <div :for={event <- @upcoming_events} class="p-4 bg-base-100 rounded-xl border border-base-200 shadow-sm flex items-start gap-4">
+                <div
+                  :for={event <- @upcoming_events}
+                  class="p-4 bg-base-100 rounded-xl border border-base-200 shadow-sm flex items-start gap-4"
+                >
                   <div class="text-center bg-base-200 rounded-lg p-2 min-w-16">
                     <span class="block text-xs uppercase font-bold opacity-60">
-                      <%# Show abbreviated day / month %>
+                      <%!-- Show abbreviated day / month --%>
                       <% local_dt = DateTime.add(event.start_at, -3, :hour) %>
-                      {Map.get(%{1 => "Jan", 2 => "Fev", 3 => "Mar", 4 => "Abr", 5 => "Mai", 6 => "Jun", 7 => "Jul", 8 => "Ago", 9 => "Set", 10 => "Out", 11 => "Nov", 12 => "Dez"}, local_dt.month)}
+                      {Map.get(
+                        %{
+                          1 => "Jan",
+                          2 => "Fev",
+                          3 => "Mar",
+                          4 => "Abr",
+                          5 => "Mai",
+                          6 => "Jun",
+                          7 => "Jul",
+                          8 => "Ago",
+                          9 => "Set",
+                          10 => "Out",
+                          11 => "Nov",
+                          12 => "Dez"
+                        },
+                        local_dt.month
+                      )}
                     </span>
                     <span class="block text-xl font-black">{local_dt.day}</span>
                   </div>
@@ -217,7 +250,10 @@ defmodule AgendaPastoralWeb.HomeLive do
               </div>
             <% else %>
               <div class="space-y-4">
-                <div :for={announcement <- @recent_announcements} class="p-5 bg-base-100 rounded-2xl border border-base-200 shadow-sm relative overflow-hidden">
+                <div
+                  :for={announcement <- @recent_announcements}
+                  class="p-5 bg-base-100 rounded-2xl border border-base-200 shadow-sm relative overflow-hidden"
+                >
                   <div class="absolute top-0 left-0 h-full w-1.5 bg-primary" />
                   <div class="flex justify-between items-start gap-2">
                     <h3 class="font-bold text-base-content text-lg">{announcement.title}</h3>
@@ -253,7 +289,10 @@ defmodule AgendaPastoralWeb.HomeLive do
           <% else %>
             <div class="bg-base-100 border border-base-200 rounded-2xl overflow-hidden shadow-sm">
               <div class="divide-y divide-base-200">
-                <div :for={alt <- @recent_alterations} class="p-4 sm:p-5 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+                <div
+                  :for={alt <- @recent_alterations}
+                  class="p-4 sm:p-5 flex flex-col sm:flex-row justify-between sm:items-center gap-3"
+                >
                   <div class="flex items-start gap-3">
                     <div class="p-2 bg-amber-500/10 rounded-lg text-amber-500 mt-0.5">
                       <.icon name="hero-exclamation-triangle" class="size-5" />
@@ -277,7 +316,6 @@ defmodule AgendaPastoralWeb.HomeLive do
             </div>
           <% end %>
         </div>
-
       </div>
     </Layouts.app>
     """

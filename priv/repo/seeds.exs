@@ -5,52 +5,67 @@ alias AgendaPastoral.Districts.District
 alias AgendaPastoral.Churches.Church
 
 # 1. Create Users (Pastor and Admin)
-IO.puts "Seeding Users..."
+IO.puts("Seeding Users...")
 pastor_email = "pastor@iasd.org"
 admin_email = "admin@iasd.org"
 
-pastor = case Repo.get_by(User, email: pastor_email) do
-  nil ->
-    {:ok, user} = AgendaPastoral.Accounts.register_user(%{
-      email: pastor_email,
-      name: "Pr. Raimundo Rosendo",
-      role: "pastor",
-      password: "password123456"
-    })
-    # Auto-confirm the user email
-    {:ok, user} = Repo.update(User.confirm_changeset(user))
-    user
-  user -> user
-end
+pastor =
+  case Repo.get_by(User, email: pastor_email) do
+    nil ->
+      {:ok, user} =
+        AgendaPastoral.Accounts.register_user(%{
+          email: pastor_email,
+          name: "Pr. Raimundo Rosendo",
+          role: "pastor",
+          password: "password123456"
+        })
 
-_admin = case Repo.get_by(User, email: admin_email) do
-  nil ->
-    {:ok, user} = AgendaPastoral.Accounts.register_user(%{
-      email: admin_email,
-      name: "Administrador",
-      role: "admin",
-      password: "admin12345678"
-    })
-    {:ok, user} = Repo.update(User.confirm_changeset(user))
-    user
-  user -> user
-end
+      # Auto-confirm the user email
+      {:ok, user} = Repo.update(User.confirm_changeset(user))
+      user
+
+    user ->
+      user
+  end
+
+_admin =
+  case Repo.get_by(User, email: admin_email) do
+    nil ->
+      {:ok, user} =
+        AgendaPastoral.Accounts.register_user(%{
+          email: admin_email,
+          name: "Administrador",
+          role: "admin",
+          password: "admin12345678"
+        })
+
+      {:ok, user} = Repo.update(User.confirm_changeset(user))
+      user
+
+    user ->
+      user
+  end
 
 # 2. Create District
-IO.puts "Seeding District..."
+IO.puts("Seeding District...")
 district_name = "Distrito São João dos Patos"
-district = case Repo.get_by(District, name: district_name) do
-  nil ->
-    Repo.insert!(%District{
-      name: district_name,
-      pastor_name: "Pr. Raimundo Rosendo",
-      active: true
-    })
-  district -> district
-end
+
+district =
+  case Repo.get_by(District, name: district_name) do
+    nil ->
+      Repo.insert!(%District{
+        name: district_name,
+        pastor_name: "Pr. Raimundo Rosendo",
+        active: true
+      })
+
+    district ->
+      district
+  end
 
 # 3. Create Churches
-IO.puts "Seeding Churches..."
+IO.puts("Seeding Churches...")
+
 churches_data = [
   {"Bairro Maria", "Pastos Bons"},
   {"Nova Canaã", "São João dos Patos"},
@@ -79,8 +94,10 @@ for {name, city} <- churches_data do
         active: true,
         district_id: district.id
       })
-    _church -> nil
+
+    _church ->
+      nil
   end
 end
 
-IO.puts "Seeding complete!"
+IO.puts("Seeding complete!")

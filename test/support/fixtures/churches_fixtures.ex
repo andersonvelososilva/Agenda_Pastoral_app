@@ -10,7 +10,8 @@ defmodule AgendaPastoral.ChurchesFixtures do
   Generate a church.
   """
   def church_fixture(attrs \\ %{}) do
-    district = Map.get(attrs, :district_id) || Map.get(attrs, "district_id") || district_fixture().id
+    district =
+      Map.get(attrs, :district_id) || Map.get(attrs, "district_id") || district_fixture().id
 
     attrs =
       Enum.into(attrs, %{

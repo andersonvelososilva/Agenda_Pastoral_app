@@ -105,10 +105,12 @@ defmodule AgendaPastoralWeb.CalendarLive do
 
     # Days to pad at the start (from previous month)
     start_pad = first_dow - 1
+
     prev_month_days =
       if start_pad > 0 do
         prev_month_date = Date.add(first_day, -1)
         prev_month_days_count = Date.days_in_month(prev_month_date)
+
         for d <- (prev_month_days_count - start_pad + 1)..prev_month_days_count do
           date = Date.new!(prev_month_date.year, prev_month_date.month, d)
           {date, :prev}
@@ -129,9 +131,11 @@ defmodule AgendaPastoralWeb.CalendarLive do
 
     # Days to pad at the end (from next month)
     end_pad = rem(7 - rem(total_so_far, 7), 7)
+
     next_month_days =
       if end_pad > 0 do
         next_month_date = Date.add(last_day, 1)
+
         for d <- 1..end_pad do
           date = Date.new!(next_month_date.year, next_month_date.month, d)
           {date, :next}
@@ -173,6 +177,7 @@ defmodule AgendaPastoralWeb.CalendarLive do
       6 => "Sábado",
       7 => "Domingo"
     }
+
     day_of_week = Date.day_of_week(date, :sunday)
     "#{Map.get(days, day_of_week)}, #{date.day} de #{translate_month(date.month)} de #{date.year}"
   end
@@ -183,9 +188,14 @@ defmodule AgendaPastoralWeb.CalendarLive do
     "#{pad.(local_dt.hour)}:#{pad.(local_dt.minute)}"
   end
 
-  defp translate_priority("urgent"), do: {"Urgente", "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"}
-  defp translate_priority("important"), do: {"Importante", "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200"}
-  defp translate_priority(_), do: {"Normal", "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"}
+  defp translate_priority("urgent"),
+    do: {"Urgente", "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"}
+
+  defp translate_priority("important"),
+    do: {"Importante", "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200"}
+
+  defp translate_priority(_),
+    do: {"Normal", "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"}
 
   defp translate_type("culto_divino"), do: "Culto Divino"
   defp translate_type("santa_ceia"), do: "Santa Ceia"
@@ -202,14 +212,15 @@ defmodule AgendaPastoralWeb.CalendarLive do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
       <div class="space-y-6">
-        
         <%!-- Header do Calendário --%>
         <div class="flex flex-col sm:flex-row justify-between items-center gap-4 py-4 border-b border-base-200">
           <div>
             <h1 class="text-3xl font-extrabold tracking-tight text-base-content text-center sm:text-left">
               Agenda Pastoral
             </h1>
-            <p class="text-sm opacity-60 text-center sm:text-left">Calendário mensal de visitas e eventos distritais</p>
+            <p class="text-sm opacity-60 text-center sm:text-left">
+              Calendário mensal de visitas e eventos distritais
+            </p>
           </div>
 
           <div class="flex items-center gap-2">
@@ -250,7 +261,8 @@ defmodule AgendaPastoralWeb.CalendarLive do
               class={[
                 "min-h-16 sm:min-h-24 p-2 cursor-pointer transition-colors relative flex flex-col justify-between hover:bg-primary/5",
                 type != :curr && "bg-base-200/50 opacity-40",
-                date == @selected_date && "bg-primary/10 hover:bg-primary/10 border-2 border-primary/50 z-10",
+                date == @selected_date &&
+                  "bg-primary/10 hover:bg-primary/10 border-2 border-primary/50 z-10",
                 date == Events.today_br() && "ring-1 ring-secondary"
               ]}
             >
@@ -276,9 +288,12 @@ defmodule AgendaPastoralWeb.CalendarLive do
                   :for={event <- Enum.take(day_events, 2)}
                   class={[
                     "text-[10px] px-1.5 py-0.5 rounded font-semibold truncate",
-                    event.priority == "urgent" && "bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300",
-                    event.priority == "important" && "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
-                    event.priority == "normal" && "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300"
+                    event.priority == "urgent" &&
+                      "bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300",
+                    event.priority == "important" &&
+                      "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
+                    event.priority == "normal" &&
+                      "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300"
                   ]}
                   title={"#{format_time(event.start_at)} - #{event.title}"}
                 >
@@ -302,12 +317,19 @@ defmodule AgendaPastoralWeb.CalendarLive do
           <% selected_day_events = Map.get(@events_by_date, @selected_date, []) %>
           <%= if Enum.empty?(selected_day_events) do %>
             <div class="text-center py-8 opacity-60">
-              <p class="font-medium text-base-content">Nenhuma atividade ou escala pastoral programada para esta data.</p>
-              <p class="text-xs opacity-60 mt-1">Selecione outro dia no calendário para consultar a agenda do pastor.</p>
+              <p class="font-medium text-base-content">
+                Nenhuma atividade ou escala pastoral programada para esta data.
+              </p>
+              <p class="text-xs opacity-60 mt-1">
+                Selecione outro dia no calendário para consultar a agenda do pastor.
+              </p>
             </div>
           <% else %>
             <div class="space-y-4">
-              <div :for={event <- selected_day_events} class="flex items-start gap-4 p-4 bg-base-200/30 border border-base-200 rounded-xl">
+              <div
+                :for={event <- selected_day_events}
+                class="flex items-start gap-4 p-4 bg-base-200/30 border border-base-200 rounded-xl"
+              >
                 <div class="p-3 bg-primary/10 rounded-lg text-primary shrink-0">
                   <.icon name="hero-clock" class="size-6" />
                 </div>
@@ -325,8 +347,7 @@ defmodule AgendaPastoralWeb.CalendarLive do
                   </p>
                   <p class="text-xs opacity-60 mt-1">
                     Horário: {format_time(event.start_at)} às {format_time(event.end_at)}
-                    <span class="mx-1.5">•</span>
-                    Tipo: {translate_type(event.type)}
+                    <span class="mx-1.5">•</span> Tipo: {translate_type(event.type)}
                   </p>
                   <%= if event.description && event.description != "" do %>
                     <p class="text-sm opacity-85 mt-2 bg-base-100 border border-base-200/60 p-3 rounded-lg">
@@ -338,7 +359,6 @@ defmodule AgendaPastoralWeb.CalendarLive do
             </div>
           <% end %>
         </div>
-
       </div>
     </Layouts.app>
     """

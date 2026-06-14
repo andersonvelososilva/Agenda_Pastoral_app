@@ -6,12 +6,22 @@ defmodule AgendaPastoral.EventsTest do
 
   import AgendaPastoral.EventsFixtures
 
-  @invalid_attrs %{change_reason: nil, description: nil, end_at: nil, priority: nil, start_at: nil, status: nil, title: nil, type: nil, church_id: nil}
+  @invalid_attrs %{
+    change_reason: nil,
+    description: nil,
+    end_at: nil,
+    priority: nil,
+    start_at: nil,
+    status: nil,
+    title: nil,
+    type: nil,
+    church_id: nil
+  }
 
   describe "events" do
     test "list_events/0 returns all events" do
       event = event_fixture()
-      assert Enum.map(Events.list_events(), &(&1.id)) == [event.id]
+      assert Enum.map(Events.list_events(), & &1.id) == [event.id]
     end
 
     test "get_event!/1 returns the event with given id" do
@@ -21,6 +31,7 @@ defmodule AgendaPastoral.EventsTest do
 
     test "create_event/1 with valid data creates an event" do
       church = AgendaPastoral.ChurchesFixtures.church_fixture()
+
       valid_attrs = %{
         change_reason: "some change_reason",
         description: "some description",
@@ -50,6 +61,7 @@ defmodule AgendaPastoral.EventsTest do
 
     test "update_event/2 with valid data updates the event" do
       event = event_fixture()
+
       update_attrs = %{
         change_reason: "some updated change_reason",
         description: "some updated description",

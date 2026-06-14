@@ -52,6 +52,16 @@ defmodule AgendaPastoralWeb.Router do
       on_mount: [{AgendaPastoralWeb.UserAuth, :require_authenticated}] do
       live "/users/settings", UserLive.Settings, :edit
       live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
+
+      # Admin routes
+      live "/admin", Admin.DashboardLive, :index
+      live "/admin/events", Admin.EventLive.Index, :index
+      live "/admin/events/new", Admin.EventLive.Index, :new
+      live "/admin/events/:id/edit", Admin.EventLive.Index, :edit
+      live "/admin/announcements", Admin.AnnouncementLive.Index, :index
+      live "/admin/announcements/new", Admin.AnnouncementLive.Index, :new
+      live "/admin/announcements/:id/edit", Admin.AnnouncementLive.Index, :edit
+      live "/admin/history", Admin.HistoryLive, :index
     end
 
     post "/users/update-password", UserSessionController, :update_password

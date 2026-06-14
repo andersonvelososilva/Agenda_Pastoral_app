@@ -5,7 +5,8 @@ config :pbkdf2_elixir, :rounds, 1
 
 # Configure your database
 config :agenda_pastoral, AgendaPastoral.Repo,
-  database: Path.expand("../agenda_pastoral_test#{System.get_env("MIX_TEST_PARTITION")}.db", __DIR__),
+  database:
+    Path.expand("../agenda_pastoral_test#{System.get_env("MIX_TEST_PARTITION")}.db", __DIR__),
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: System.schedulers_online() * 2
 

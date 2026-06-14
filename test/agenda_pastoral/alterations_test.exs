@@ -11,7 +11,7 @@ defmodule AgendaPastoral.AlterationsTest do
   describe "alterations" do
     test "list_alterations/0 returns all alterations" do
       alteration = alteration_fixture()
-      assert Enum.map(Alterations.list_alterations(), &(&1.id)) == [alteration.id]
+      assert Enum.map(Alterations.list_alterations(), & &1.id) == [alteration.id]
     end
 
     test "get_alteration!/1 returns the alteration with given id" do
@@ -36,13 +36,18 @@ defmodule AgendaPastoral.AlterationsTest do
       alteration = alteration_fixture()
       update_attrs = %{description: "some updated description"}
 
-      assert {:ok, %Alteration{} = alteration} = Alterations.update_alteration(alteration, update_attrs)
+      assert {:ok, %Alteration{} = alteration} =
+               Alterations.update_alteration(alteration, update_attrs)
+
       assert alteration.description == "some updated description"
     end
 
     test "update_alteration/2 with invalid data returns error changeset" do
       alteration = alteration_fixture()
-      assert {:error, %Ecto.Changeset{}} = Alterations.update_alteration(alteration, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Alterations.update_alteration(alteration, @invalid_attrs)
+
       assert Alterations.get_alteration!(alteration.id).id == alteration.id
     end
 

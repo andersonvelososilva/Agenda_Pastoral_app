@@ -56,13 +56,15 @@ defmodule AgendaPastoral.Churches do
   """
   def list_churches_with_next_event do
     churches = Repo.all(from c in Church, where: c.active == true, order_by: [asc: c.name])
-    
+
     now = DateTime.utc_now()
-    upcoming_events = Repo.all(
-      from e in AgendaPastoral.Events.Event,
-        where: e.start_at >= ^now and e.status != "cancelled",
-        order_by: [asc: e.start_at]
-    )
+
+    upcoming_events =
+      Repo.all(
+        from e in AgendaPastoral.Events.Event,
+          where: e.start_at >= ^now and e.status != "cancelled",
+          order_by: [asc: e.start_at]
+      )
 
     events_by_church = Enum.group_by(upcoming_events, & &1.church_id)
 
@@ -79,12 +81,13 @@ defmodule AgendaPastoral.Churches do
   def get_church_with_upcoming_events!(id) do
     church = Repo.get!(Church, id)
     now = DateTime.utc_now()
-    
-    events = Repo.all(
-      from e in AgendaPastoral.Events.Event,
-        where: e.church_id == ^church.id and e.start_at >= ^now and e.status != "cancelled",
-        order_by: [asc: e.start_at]
-    )
+
+    events =
+      Repo.all(
+        from e in AgendaPastoral.Events.Event,
+          where: e.church_id == ^church.id and e.start_at >= ^now and e.status != "cancelled",
+          order_by: [asc: e.start_at]
+      )
 
     {church, events}
   end

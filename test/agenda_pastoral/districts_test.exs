@@ -34,7 +34,12 @@ defmodule AgendaPastoral.DistrictsTest do
 
     test "update_district/2 with valid data updates the district" do
       district = district_fixture()
-      update_attrs = %{active: false, name: "some updated name", pastor_name: "some updated pastor_name"}
+
+      update_attrs = %{
+        active: false,
+        name: "some updated name",
+        pastor_name: "some updated pastor_name"
+      }
 
       assert {:ok, %District{} = district} = Districts.update_district(district, update_attrs)
       assert district.active == false

@@ -37,7 +37,13 @@ defmodule AgendaPastoral.ChurchesTest do
 
     test "update_church/2 with valid data updates the church" do
       church = church_fixture()
-      update_attrs = %{active: false, city: "some updated city", name: "some updated name", state: "some updated state"}
+
+      update_attrs = %{
+        active: false,
+        city: "some updated city",
+        name: "some updated name",
+        state: "some updated state"
+      }
 
       assert {:ok, %Church{} = church} = Churches.update_church(church, update_attrs)
       assert church.active == false
