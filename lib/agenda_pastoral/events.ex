@@ -94,4 +94,23 @@ defmodule AgendaPastoral.Events do
         limit: ^limit
     )
   end
+
+  @doc """
+  List events for a specific month and year.
+  """
+  def list_events_for_month(year, month) do
+    start_date = Date.new!(year, month, 1)
+    days_in_month = Date.days_in_month(start_date)
+    end_date = Date.new!(year, month, days_in_month)
+
+    start_dt = DateTime.new!(start_date, ~T[00:00:00], "Etc/UTC") |> DateTime.add(3, :hour)
+    end_dt = DateTime.new!(end_date, ~T[23:59:59], "Etc/UTC") |> DateTime.add(3, :hour)
+
+    Repo.all(
+      from e in Event,
+        where: e.start_at >= ^start_dt and e.start_at <= ^end_dt,
+        preload: [:church],
+        order_by: [asc: e.start_at]
+    )
+  end
 end
