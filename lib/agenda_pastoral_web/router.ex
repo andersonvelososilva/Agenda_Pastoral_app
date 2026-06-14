@@ -64,6 +64,8 @@ defmodule AgendaPastoralWeb.Router do
       on_mount: [{AgendaPastoralWeb.UserAuth, :mount_current_scope}] do
       live "/", HomeLive, :index
       live "/calendar", CalendarLive, :index
+      live "/churches", ChurchLive.Index, :index
+      live "/churches/:id", ChurchLive.Show, :show
       live "/users/log-in", UserLive.Login, :new
       live "/users/log-in/:token", UserLive.Confirmation, :new
     end
