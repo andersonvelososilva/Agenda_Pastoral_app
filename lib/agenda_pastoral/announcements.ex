@@ -38,6 +38,7 @@ defmodule AgendaPastoral.Announcements do
     %Announcement{}
     |> Announcement.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:announcement_created)
   end
 
   @doc """
@@ -47,6 +48,7 @@ defmodule AgendaPastoral.Announcements do
     announcement
     |> Announcement.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:announcement_updated)
   end
 
   @doc """
@@ -54,7 +56,15 @@ defmodule AgendaPastoral.Announcements do
   """
   def delete_announcement(%Announcement{} = announcement) do
     Repo.delete(announcement)
+    |> broadcast(:announcement_deleted)
   end
+
+  defp broadcast({:ok, announcement} = result, event_name) do
+    Phoenix.PubSub.broadcast(AgendaPastoral.PubSub, "announcements", {event_name, announcement})
+    result
+  end
+
+  defp broadcast({:error, _} = result, _event_name), do: result
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking announcement changes.

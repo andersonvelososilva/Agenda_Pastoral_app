@@ -1,0 +1,23 @@
+{
+  "name": "Agenda Pastoral Digital",
+  "short_name": "Agenda Pastoral",
+  "description": "Acompanhe em tempo real a agenda pastoral do Distrito de São João dos Patos da IASD.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#1e293b",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/logo.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/logo.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -42,6 +42,7 @@ defmodule AgendaPastoral.Alterations do
     %Alteration{}
     |> Alteration.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:alteration_created)
   end
 
   @doc """
@@ -51,6 +52,7 @@ defmodule AgendaPastoral.Alterations do
     alteration
     |> Alteration.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:alteration_updated)
   end
 
   @doc """
@@ -58,7 +60,15 @@ defmodule AgendaPastoral.Alterations do
   """
   def delete_alteration(%Alteration{} = alteration) do
     Repo.delete(alteration)
+    |> broadcast(:alteration_deleted)
   end
+
+  defp broadcast({:ok, alteration} = result, event_name) do
+    Phoenix.PubSub.broadcast(AgendaPastoral.PubSub, "alterations", {event_name, alteration})
+    result
+  end
+
+  defp broadcast({:error, _} = result, _event_name), do: result
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking alteration changes.

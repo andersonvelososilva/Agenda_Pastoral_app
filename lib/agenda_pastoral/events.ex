@@ -28,6 +28,7 @@ defmodule AgendaPastoral.Events do
     %Event{}
     |> Event.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:event_created)
   end
 
   @doc """
@@ -37,6 +38,7 @@ defmodule AgendaPastoral.Events do
     event
     |> Event.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:event_updated)
   end
 
   @doc """
@@ -44,7 +46,15 @@ defmodule AgendaPastoral.Events do
   """
   def delete_event(%Event{} = event) do
     Repo.delete(event)
+    |> broadcast(:event_deleted)
   end
+
+  defp broadcast({:ok, event} = result, event_name) do
+    Phoenix.PubSub.broadcast(AgendaPastoral.PubSub, "events", {event_name, event})
+    result
+  end
+
+  defp broadcast({:error, _} = result, _event_name), do: result
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking event changes.
