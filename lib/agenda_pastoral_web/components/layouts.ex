@@ -35,39 +35,53 @@ defmodule AgendaPastoralWeb.Layouts do
 
   def app(assigns) do
     ~H"""
-    <header class="border-b border-base-200 bg-base-100 sticky top-0 z-50 backdrop-blur-md bg-opacity-80">
+    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent z-[60]" />
+    <header class="border-b border-base-200/50 bg-base-100/80 sticky top-0 z-50 backdrop-blur-lg">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 justify-between items-center">
           <div class="flex items-center gap-3">
-            <a href="/" class="flex items-center gap-2">
-              <span class="text-xl font-bold tracking-tight text-primary">Agenda Pastoral</span>
-              <span class="hidden sm:inline text-xs text-base-content opacity-60">S. J. dos Patos</span>
+            <a href="/" class="flex items-center gap-2 group">
+              <div class="size-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-primary-content font-bold shadow-md shadow-primary/20 group-hover:scale-105 transition-transform">
+                A
+              </div>
+              <div class="flex flex-col">
+                <span class="text-base font-black tracking-tight text-base-content group-hover:text-primary transition-colors">
+                  Agenda Pastoral
+                </span>
+                <span class="text-[10px] uppercase font-bold tracking-wider opacity-60">
+                  São João dos Patos
+                </span>
+              </div>
             </a>
           </div>
 
-          <nav class="hidden md:flex space-x-6 items-center">
-            <a href="/" class="text-sm font-medium hover:text-primary transition-colors">Início</a>
-            <a href="/calendar" class="text-sm font-medium hover:text-primary transition-colors">Calendário</a>
-            <a href="/churches" class="text-sm font-medium hover:text-primary transition-colors">Igrejas</a>
+          <nav class="hidden md:flex space-x-1 items-center bg-base-200/50 p-1 rounded-xl border border-base-300">
+            <a href="/" class="px-3 py-1.5 text-xs font-bold rounded-lg hover:bg-base-100 hover:shadow-sm text-base-content/85 hover:text-primary transition-all duration-200">
+              Início
+            </a>
+            <a href="/calendar" class="px-3 py-1.5 text-xs font-bold rounded-lg hover:bg-base-100 hover:shadow-sm text-base-content/85 hover:text-primary transition-all duration-200">
+              Calendário
+            </a>
+            <a href="/churches" class="px-3 py-1.5 text-xs font-bold rounded-lg hover:bg-base-100 hover:shadow-sm text-base-content/85 hover:text-primary transition-all duration-200">
+              Igrejas
+            </a>
             <%= if @current_scope && @current_scope.user do %>
-              <a
-                href="/admin"
-                class="text-sm font-medium text-secondary hover:text-primary transition-colors"
-              >Painel</a>
-              <a
-                href="/users/settings"
-                class="text-sm font-medium hover:text-primary transition-colors"
-              >Configurações</a>
-              <span class="text-xs opacity-50" title={@current_scope.user.email}>Olá, {@current_scope.user.name}</span>
-              <.link
-                href={~p"/users/log-out"}
-                method="delete"
-                class="text-sm font-medium text-error hover:underline"
-              >
+              <a href="/admin" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-all duration-200">
+                Painel
+              </a>
+              <a href="/users/settings" class="px-3 py-1.5 text-xs font-bold rounded-lg hover:bg-base-100 hover:shadow-sm text-base-content/85 hover:text-primary transition-all duration-200">
+                Ajustes
+              </a>
+              <span class="px-2 text-[10px] uppercase font-bold tracking-wider opacity-50" title={@current_scope.user.email}>
+                {@current_scope.user.name}
+              </span>
+              <.link href={~p"/users/log-out"} method="delete" class="px-3 py-1.5 text-xs font-bold rounded-lg text-error hover:bg-error/10 transition-all duration-200">
                 Sair
               </.link>
             <% else %>
-              <a href="/users/log-in" class="text-sm font-medium hover:text-primary transition-colors">Entrar</a>
+              <a href="/users/log-in" class="px-3 py-1.5 text-xs font-bold rounded-lg hover:bg-base-100 hover:shadow-sm text-base-content/85 hover:text-primary transition-all duration-200">
+                Entrar
+              </a>
             <% end %>
           </nav>
 
@@ -76,26 +90,23 @@ defmodule AgendaPastoralWeb.Layouts do
 
             <%!-- Mobile menu trigger --%>
             <div class="dropdown dropdown-end md:hidden">
-              <button tabindex="0" class="btn btn-ghost btn-circle">
-                <.icon name="hero-bars-3" class="size-6" />
+              <button tabindex="0" class="btn btn-ghost btn-circle border border-base-300">
+                <.icon name="hero-bars-3" class="size-5" />
               </button>
-              <ul
-                tabindex="0"
-                class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 mt-4 border border-base-200"
-              >
-                <li><a href="/">Início</a></li>
-                <li><a href="/calendar">Calendário</a></li>
-                <li><a href="/churches">Igrejas</a></li>
+              <ul tabindex="0" class="dropdown-content menu p-2 shadow-2xl bg-base-100 rounded-2xl w-52 mt-4 border border-base-200/80">
+                <li><a href="/" class="font-semibold">Início</a></li>
+                <li><a href="/calendar" class="font-semibold">Calendário</a></li>
+                <li><a href="/churches" class="font-semibold">Igrejas</a></li>
                 <%= if @current_scope && @current_scope.user do %>
-                  <li><a href="/admin" class="text-secondary">Painel</a></li>
-                  <li class="menu-title px-4 py-2 text-xs opacity-60">{@current_scope.user.name}</li>
+                  <li><a href="/admin" class="text-primary font-semibold">Painel</a></li>
+                  <li class="menu-title px-4 py-2 text-[10px] uppercase font-bold tracking-wider opacity-60">{@current_scope.user.name}</li>
                   <li>
-                    <.link href={~p"/users/log-out"} method="delete" class="text-error">
+                    <.link href={~p"/users/log-out"} method="delete" class="text-error font-semibold">
                       Sair
                     </.link>
                   </li>
                 <% else %>
-                  <li><a href="/users/log-in">Entrar</a></li>
+                  <li><a href="/users/log-in" class="font-semibold">Entrar</a></li>
                 <% end %>
               </ul>
             </div>

@@ -100,55 +100,57 @@ defmodule AgendaPastoralWeb.ChurchLive.Show do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <div class="space-y-6">
+      <div class="space-y-6 max-w-6xl mx-auto animate-fade-in">
         <%!-- Breadcrumbs / Navegação --%>
         <div>
           <.link
             navigate={~p"/churches"}
-            class="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
+            class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-primary hover:underline bg-primary/10 px-3 py-1.5 rounded-lg transition-colors"
           >
-            <.icon name="hero-arrow-left" class="size-4" /> Voltar para todas as igrejas
+            <.icon name="hero-arrow-left" class="size-3.5" /> Voltar para todas as igrejas
           </.link>
         </div>
 
         <%!-- Cabeçalho da Igreja --%>
-        <div class="flex items-center gap-4 py-4 border-b border-base-200">
-          <div class="p-3 bg-primary/10 rounded-2xl text-primary">
+        <div class="flex items-center gap-4 py-4 border-b border-base-200/50">
+          <div class="p-3 bg-gradient-to-br from-primary/10 to-secondary/5 text-primary rounded-2xl border border-primary/10">
             <.icon name="hero-home" class="size-8" />
           </div>
           <div>
-            <h1 class="text-3xl font-extrabold tracking-tight text-base-content">
+            <h1 class="text-3xl font-black tracking-tight text-base-content">
               {@church.name}
             </h1>
-            <p class="text-sm opacity-60">Cidade: {@church.city} - {@church.state}</p>
+            <p class="text-xs sm:text-sm font-bold opacity-60 uppercase tracking-wider mt-1">Localidade: {@church.city} - {@church.state}</p>
           </div>
         </div>
 
         <%!-- Próxima Visita em Destaque --%>
         <% next_event = List.first(@upcoming_events) %>
-        <div class="card bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 shadow-sm p-6 rounded-2xl">
-          <div class="flex items-start gap-4">
-            <div class="p-3 bg-emerald-500/10 rounded-xl text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0">
+        <div class="relative overflow-hidden rounded-3xl border border-emerald-500/25 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 shadow-sm p-6 sm:p-8">
+          <div class="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-emerald-500/10 blur-2xl pointer-events-none" />
+          <div class="flex items-start gap-4 relative">
+            <div class="p-3 bg-emerald-500/10 rounded-xl text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0 border border-emerald-500/20">
               <.icon name="hero-calendar-days" class="size-6" />
             </div>
-            <div>
-              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-800 dark:text-emerald-200">
-                Próxima Escala Pastoral
+            <div class="space-y-2 flex-1 min-w-0">
+              <span class="inline-flex px-2.5 py-1 rounded-full text-[9px] uppercase tracking-wider font-extrabold bg-emerald-500/20 text-emerald-800 dark:text-emerald-200">
+                Próxima Visita Pastoral
               </span>
               <%= if next_event do %>
-                <h3 class="text-xl font-bold mt-2 text-base-content">{next_event.title}</h3>
-                <p class="text-sm opacity-70 mt-1 font-medium">
+                <h3 class="text-xl sm:text-2xl font-black text-base-content">{next_event.title}</h3>
+                <p class="text-xs sm:text-sm opacity-80 font-bold text-base-content flex items-center gap-1">
+                  <.icon name="hero-clock" class="size-3.5" />
                   {format_datetime(next_event.start_at)}
                 </p>
-                <p class="text-xs opacity-60 mt-1">Tipo: {translate_type(next_event.type)}</p>
+                <p class="text-[10px] uppercase font-bold tracking-wider opacity-60 mt-1">Tipo: {translate_type(next_event.type)}</p>
                 <%= if next_event.description && next_event.description != "" do %>
-                  <p class="text-sm opacity-80 mt-3 border-l-2 border-emerald-500 pl-3 italic">
+                  <div class="text-xs sm:text-sm text-base-content/85 mt-3 border-l-2 border-emerald-500/50 pl-3 italic bg-base-100/50 p-3 rounded-r-xl">
                     {next_event.description}
-                  </p>
+                  </div>
                 <% end %>
               <% else %>
-                <h3 class="text-xl font-semibold mt-2 text-base-content opacity-70">
-                  Sem visitas pastoral programadas
+                <h3 class="text-lg font-bold text-base-content/70">
+                  Sem visitas pastorais programadas
                 </h3>
                 <p class="text-xs opacity-50 mt-1">
                   Nenhum evento agendado para esta igreja no momento.
@@ -159,24 +161,24 @@ defmodule AgendaPastoralWeb.ChurchLive.Show do
         </div>
 
         <%!-- Agenda de Visitas Futuras --%>
-        <div>
-          <h2 class="text-xl font-bold flex items-center gap-2 mb-4 text-base-content">
+        <div class="bg-base-100 rounded-3xl border border-base-200/60 p-6 shadow-sm">
+          <h2 class="text-lg font-black flex items-center gap-2 mb-6 text-base-content">
             <.icon name="hero-list-bullet" class="size-5 text-primary" /> Todas as Visitas Agendadas
           </h2>
 
           <%= if Enum.empty?(@upcoming_events) do %>
-            <div class="p-8 bg-base-100 rounded-2xl border border-base-200 text-center opacity-60">
-              <p class="text-base-content">Nenhuma visita futura agendada para esta congregação.</p>
+            <div class="p-8 bg-base-200/40 rounded-2xl border border-base-200 border-dashed text-center opacity-60">
+              <p class="text-base-content font-bold">Nenhuma visita futura agendada para esta congregação.</p>
             </div>
           <% else %>
             <div class="space-y-4">
               <div
                 :for={event <- @upcoming_events}
-                class="flex items-start gap-4 p-5 bg-base-100 border border-base-200 rounded-2xl shadow-sm"
+                class="flex flex-col sm:flex-row items-start gap-4 p-5 bg-base-200/10 hover:bg-base-200/25 border border-base-200/70 rounded-2xl transition-all duration-200"
               >
-                <div class="text-center bg-base-200 rounded-xl p-2.5 min-w-16 shrink-0">
+                <div class="text-center bg-gradient-to-br from-primary/10 to-secondary/5 text-primary rounded-xl p-2.5 min-w-16 shrink-0 border border-primary/10">
                   <% local_dt = DateTime.add(event.start_at, -3, :hour) %>
-                  <span class="block text-xs uppercase font-bold opacity-60">
+                  <span class="block text-[10px] uppercase font-black opacity-75">
                     {Map.get(
                       %{
                         1 => "Jan",
@@ -195,25 +197,28 @@ defmodule AgendaPastoralWeb.ChurchLive.Show do
                       local_dt.month
                     )}
                   </span>
-                  <span class="block text-xl font-black">{local_dt.day}</span>
+                  <span class="block text-xl font-black mt-0.5">{local_dt.day}</span>
                 </div>
 
-                <div class="flex-1 min-w-0">
+                <div class="flex-1 min-w-0 space-y-1">
                   <div class="flex items-center gap-2 flex-wrap">
-                    <h3 class="text-lg font-bold text-base-content truncate">{event.title}</h3>
+                    <h3 class="text-base font-black text-base-content truncate">{event.title}</h3>
                     <% {p_label, p_class} = translate_priority(event.priority) %>
-                    <span class={"px-2.5 py-0.5 text-xs font-semibold rounded-full #{p_class}"}>
+                    <span class={"px-2 py-0.5 text-[8px] uppercase tracking-wider font-extrabold rounded-md #{p_class}"}>
                       {p_label}
                     </span>
+                    <span class="px-2 py-0.5 text-[8px] uppercase tracking-wider font-extrabold rounded-md bg-base-300 text-base-content/85">
+                      {translate_type(event.type)}
+                    </span>
                   </div>
-                  <p class="text-xs opacity-60 mt-1">
-                    Horário: {format_time(event.start_at)} às {format_time(event.end_at)}
-                    <span class="mx-1.5">•</span> Tipo: {translate_type(event.type)}
+                  <p class="text-xs opacity-60 mt-1.5 flex items-center gap-1">
+                    <.icon name="hero-clock" class="size-3.5" />
+                    Horário: <span class="font-semibold text-base-content/80">{format_time(event.start_at)} às {format_time(event.end_at)}</span>
                   </p>
                   <%= if event.description && event.description != "" do %>
-                    <p class="text-sm opacity-80 mt-2 italic border-l border-primary/20 pl-3">
+                    <div class="text-xs sm:text-sm text-base-content/85 mt-3 bg-base-100 border border-base-200/60 p-3 rounded-xl">
                       {event.description}
-                    </p>
+                    </div>
                   <% end %>
                 </div>
               </div>

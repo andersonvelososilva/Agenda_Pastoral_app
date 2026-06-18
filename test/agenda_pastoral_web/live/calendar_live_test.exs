@@ -8,8 +8,8 @@ defmodule AgendaPastoralWeb.CalendarLiveTest do
     event = event_fixture(%{title: "Batismo Especial"})
 
     {:ok, _view, html} = live(conn, ~p"/calendar")
-    assert html =~ "Agenda Pastoral"
-    assert html =~ "Calendário mensal"
+    assert html =~ "Agenda Distrital"
+    assert html =~ "Calendário de visitas"
     assert html =~ event.title
   end
 end

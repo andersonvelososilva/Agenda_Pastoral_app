@@ -102,18 +102,18 @@ defmodule AgendaPastoralWeb.ChurchLive.Index do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <div class="space-y-6">
+      <div class="space-y-6 max-w-6xl mx-auto animate-fade-in">
         <%!-- Header --%>
-        <div class="py-4 border-b border-base-200">
-          <h1 class="text-3xl font-extrabold tracking-tight text-base-content">
+        <div class="py-4 border-b border-base-200/50">
+          <h1 class="text-3xl font-black tracking-tight text-base-content">
             Igrejas do Distrito
           </h1>
-          <p class="text-sm opacity-60">Consulte as congregações locais e suas escalas pastorais</p>
+          <p class="text-xs sm:text-sm font-semibold opacity-60">Consulte as congregações locais e suas escalas pastorais</p>
         </div>
 
         <%!-- Barra de busca --%>
         <div class="relative w-full">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-base-content opacity-40">
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-base-content opacity-40">
             <.icon name="hero-magnifying-glass" class="size-5" />
           </div>
           <input
@@ -123,15 +123,15 @@ defmodule AgendaPastoralWeb.ChurchLive.Index do
             phx-keyup="search"
             phx-key="any"
             placeholder="Buscar por nome da igreja ou cidade..."
-            class="input input-bordered w-full pl-10 bg-base-100 border-base-200 text-base-content focus:border-primary focus:ring-primary rounded-xl"
+            class="input input-bordered w-full pl-11 bg-base-100 border-base-200 text-base-content focus:border-primary focus:ring-primary rounded-2xl shadow-sm text-sm"
             autocomplete="off"
           />
         </div>
 
         <%!-- Grid das Igrejas --%>
         <%= if Enum.empty?(@churches) do %>
-          <div class="text-center py-12 bg-base-100 rounded-2xl border border-base-200">
-            <p class="text-base-content opacity-60">
+          <div class="text-center py-12 bg-base-100 rounded-3xl border border-base-200 border-dashed">
+            <p class="text-base-content font-bold opacity-60">
               Nenhuma igreja encontrada com o termo pesquisado.
             </p>
           </div>
@@ -139,48 +139,47 @@ defmodule AgendaPastoralWeb.ChurchLive.Index do
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div
               :for={{church, next_event} <- @churches}
-              class="card bg-base-100 border border-base-200/80 shadow-sm hover:shadow-md transition-all rounded-2xl overflow-hidden flex flex-col justify-between"
+              class="group bg-base-100 border border-base-200/60 shadow-sm hover:shadow-lg transition-all duration-200 rounded-3xl overflow-hidden flex flex-col justify-between"
             >
-              <div class="p-5">
+              <div class="p-6">
                 <div class="flex items-center gap-3">
-                  <div class="p-2.5 bg-primary/10 rounded-xl text-primary shrink-0">
-                    <.icon name="hero-home" class="size-6" />
+                  <div class="p-3 bg-gradient-to-br from-primary/10 to-secondary/5 text-primary rounded-2xl group-hover:scale-105 transition-transform border border-primary/10">
+                    <.icon name="hero-home" class="size-5" />
                   </div>
                   <div>
-                    <h3 class="font-bold text-base-content text-lg leading-tight">{church.name}</h3>
-                    <p class="text-xs opacity-60 mt-0.5">{church.city} - {church.state}</p>
+                    <h3 class="font-black text-base-content text-base leading-tight">{church.name}</h3>
+                    <p class="text-[10px] uppercase tracking-wider font-extrabold opacity-60 mt-1">{church.city} - {church.state}</p>
                   </div>
                 </div>
 
                 <%!-- Status da Próxima Visita --%>
-                <div class="mt-5 pt-4 border-t border-base-100 bg-base-200/20 rounded-xl p-3">
-                  <span class="block text-[10px] uppercase font-bold opacity-50 tracking-wider">Próxima Visita Pastoral</span>
-                  <div class="flex items-center gap-2 mt-1">
-                    <div class={[
-                      "size-2 rounded-full shrink-0",
-                      next_event && "bg-emerald-500 animate-pulse",
-                      !next_event && "bg-base-300"
-                    ]} />
+                <div class="mt-6 pt-4 border-t border-base-200/50 bg-base-200/35 rounded-2xl p-4">
+                  <span class="block text-[9px] uppercase font-black opacity-50 tracking-wider">Próxima Visita Pastoral</span>
+                  <div class="flex items-center gap-2 mt-1.5">
+                    <span class="relative flex h-2 w-2">
+                      <span :if={next_event} class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span class={["relative inline-flex rounded-full h-2 w-2", next_event && "bg-emerald-500", !next_event && "bg-base-300"]}></span>
+                    </span>
                     <span class={[
-                      "text-xs font-semibold truncate",
-                      next_event && "text-emerald-700 dark:text-emerald-300 font-bold",
+                      "text-xs font-extrabold truncate",
+                      next_event && "text-emerald-600 dark:text-emerald-400",
                       !next_event && "text-base-content opacity-60"
                     ]}>
                       {format_datetime(next_event)}
                     </span>
                   </div>
-                  <span :if={next_event} class="block text-[11px] opacity-70 mt-1 truncate">
-                    Evento: {next_event.title}
-                  </span>
+                  <p :if={next_event} class="text-[11px] opacity-75 mt-2 truncate bg-base-100 py-1.5 px-2.5 rounded-lg border border-base-200/60 font-semibold text-base-content">
+                    {next_event.title}
+                  </p>
                 </div>
               </div>
 
-              <div class="bg-base-200/30 px-5 py-3 border-t border-base-200/50 flex justify-end">
+              <div class="bg-base-200/30 px-6 py-4.5 border-t border-base-200/50 flex justify-end">
                 <.link
                   navigate={~p"/churches/#{church.id}"}
-                  class="btn btn-xs btn-ghost text-primary font-bold hover:bg-primary/10 flex items-center gap-1"
+                  class="btn btn-xs btn-ghost text-primary font-black hover:bg-primary/10 flex items-center gap-1.5 rounded-lg uppercase tracking-wider text-[10px]"
                 >
-                  Ver Detalhes <span aria-hidden="true">&rarr;</span>
+                  Ver Escalas <span aria-hidden="true">&rarr;</span>
                 </.link>
               </div>
             </div>
