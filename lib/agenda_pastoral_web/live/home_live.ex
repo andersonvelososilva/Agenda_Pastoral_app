@@ -137,6 +137,18 @@ defmodule AgendaPastoralWeb.HomeLive do
                   <.icon name="hero-calendar-days" class="size-4 text-primary" /> {format_date(@today_date)}
                 </p>
               </div>
+
+              <a
+                href="https://wa.me/559684040404?text=Ol%C3%A1%20Pastor%20Raimundo,%20vi%20sua%20agenda%20no%20aplicativo."
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn bg-[#25D366] hover:bg-[#22c35e] text-white font-bold border-none rounded-xl flex items-center gap-2 self-start sm:self-auto shadow-lg shadow-emerald-500/20"
+              >
+                <svg class="size-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.963C16.59 2.01 14.12 1.01 11.5 1.01c-5.436 0-9.861 4.372-9.865 9.801-.001 1.762.482 3.483 1.4 5.011L2.083 22l6.394-1.666c1.558.847 3.238 1.293 4.965 1.296z" />
+                </svg>
+                Falar com o Pastor
+              </a>
             </div>
 
             <div class="mt-6 border-t border-slate-800/80 pt-6">
